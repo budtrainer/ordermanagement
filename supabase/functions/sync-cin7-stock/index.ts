@@ -3,7 +3,7 @@
 // - Logs context and returns { results: [] }
 // - Includes CORS and safe error handling
 
-import { corsHeaders, err, isOptions, ok, readJson, withCors } from '../_shared/utils.ts';
+import { corsHeaders, err, isOptions, ok, readJson } from '../_shared/utils.ts';
 
 Deno.serve(async (req: Request): Promise<Response> => {
   // CORS preflight
