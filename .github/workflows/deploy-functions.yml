@@ -3,12 +3,6 @@ name: Deploy Supabase Functions
 on:
   workflow_dispatch:
     inputs:
-      environment:
-        description: 'Target environment'
-        required: true
-        default: 'dev'
-        type: choice
-        options: [dev, stg, prod]
       project_ref:
         description: 'Supabase Project Ref'
         required: true
@@ -17,7 +11,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    environment: prod
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,12 +20,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Activate pnpm
-        run: corepack prepare pnpm@9.7.0 --activate
 
       - name: Setup Supabase CLI
         uses: supabase/setup-cli@v1

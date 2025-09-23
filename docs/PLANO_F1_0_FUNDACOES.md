@@ -147,13 +147,13 @@ Foco: preparar repositório, monorepo, padrões de código/qualidade, ambientes 
 - **Objetivo**: pipeline confiável para testes e deploys não disruptivos.
 - **Etapas**:
   1. Workflow `test`: checkout → setup node → `pnpm i` → `pnpm -w run test` → `type-check` → `lint`.
-  2. Workflow `deploy-api`: `supabase db push` (quando houver migrations) e `supabase functions deploy` (apenas stubs nesta fase).
-  3. Workflow `deploy-web`: build e `vercel --prod` (projeto já ligado ao repositório).
-  4. Branch protection + ambientes GitHub (`staging`, `production`) com aprovadores.
+  2. Workflow `deploy-functions` (prod único): `supabase functions deploy` (stubs) e `supabase db push` opcional se houver migrations e senha configurada.
+  3. Workflow `deploy-web` (prod único): build remoto via Vercel CLI (`vercel --prod`) no diretório `apps/web/`.
+  4. Branch protection básica para `main` exigindo status `CI` verde.
 - **Entregáveis**:
   - `.github/workflows/deploy.yml` e secrets necessários (ver F1.0-H).
 - **Critérios de aceite**:
-  - Execução verde do job `test`; deploys disparáveis manualmente.
+  - Execução verde do job `test`; deploys disparáveis manualmente (apenas `prod`).
 - **Riscos & Mitigações**:
   - `db push` sem migrations → condicionar etapa para evitar erros.
 - **Rollback**:

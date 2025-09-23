@@ -2,18 +2,12 @@ name: Deploy Web (Vercel)
 
 on:
   workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Target environment'
-        required: true
-        default: 'prod'
-        type: choice
-        options: [prod]
+    inputs: {}
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    environment: prod
     steps:
       - name: Checkout
         uses: actions/checkout@v4
