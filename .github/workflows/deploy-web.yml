@@ -32,7 +32,6 @@ jobs:
           fi
 
       - name: Pull Vercel env (production)
-        working-directory: apps/web
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -40,7 +39,6 @@ jobs:
         run: vercel pull --yes --environment=production --token "$VERCEL_TOKEN"
 
       - name: Remote deploy (production)
-        working-directory: apps/web
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}

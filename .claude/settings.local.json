@@ -24,7 +24,8 @@
       "Bash(supabase functions deploy:*)",
       "Bash(cd:*)",
       "Bash(curl:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(gh workflow run:*)"
     ],
     "deny": [],
     "ask": []
