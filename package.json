@@ -1,0 +1,20 @@
+{
+  "name": "budtrainer-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Budtrainer - Order Management & Supplier Portal (CIN7-only, Supabase) - monorepo",
+  "packageManager": "pnpm@9.7.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "lint": "echo \"TODO: add ESLint in F1.0-B\"",
+    "type-check": "echo \"TODO: add TypeScript config in F1.0-B\"",
+    "test": "echo \"TODO: add test runner in F1.0-B\"",
+    "build": "echo \"No build at root\""
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
