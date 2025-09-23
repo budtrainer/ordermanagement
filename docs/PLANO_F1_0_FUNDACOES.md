@@ -7,6 +7,7 @@ Foco: preparar repositório, monorepo, padrões de código/qualidade, ambientes 
 ---
 
 ## F1.0-A — Repositório e Monorepo
+
 - **Objetivo**: criar a estrutura base do projeto conforme a arquitetura.
 - **Etapas (acionáveis)**:
   1. Criar repositório Git (privado) e configurar proteções de branch (`main` protegida, PRs obrigatórios).
@@ -30,9 +31,12 @@ Foco: preparar repositório, monorepo, padrões de código/qualidade, ambientes 
 - **Rollback**:
   - Reverter commit inicial; manter branch `bootstrap` isolada até aprovação.
 
+- **Status**: ✅ Concluído (2025-09-22)
+
 ---
 
 ## F1.0-B — Padrões de Código e Qualidade
+
 - **Objetivo**: padronizar estilo, qualidade e disciplina de commits.
 - **Etapas**:
   1. TypeScript `strict: true` em todos os `tsconfig.json`.
@@ -50,9 +54,12 @@ Foco: preparar repositório, monorepo, padrões de código/qualidade, ambientes 
 - **Rollback**:
   - Desabilitar hooks temporariamente (mantendo guia ativo).
 
+- **Status**: ✅ Concluído (2025-09-22)
+
 ---
 
 ## F1.0-C — Frontend baseline (apps/web)
+
 - **Objetivo**: entregar Next.js 14 com App Router e base de UI en-US.
 - **Etapas**:
   1. Bootstrapping do Next.js 14 (TypeScript) com Tailwind CSS.
@@ -69,9 +76,12 @@ Foco: preparar repositório, monorepo, padrões de código/qualidade, ambientes 
 - **Rollback**:
   - Reverter rota/layout; manter somente `/health`.
 
+- **Status**: ✅ Concluído (2025-09-22)
+
 ---
 
 ## F1.0-D — Backend baseline (apps/api)
+
 - **Objetivo**: Fastify com camada de erros/log e endpoint de saúde.
 - **Etapas**:
   1. Inicializar Fastify com `GET /health` e `GET /version`.
@@ -87,9 +97,12 @@ Foco: preparar repositório, monorepo, padrões de código/qualidade, ambientes 
 - **Rollback**:
   - Isolar API em branch; manter apenas health route se necessário.
 
+- **Status**: ✅ Concluído (2025-09-23)
+
 ---
 
 ## F1.0-E — Supabase bootstrap
+
 - **Objetivo**: provisionar projeto e preparar bases (RLS e Storage).
 - **Etapas**:
   1. Criar projeto Supabase DEV; habilitar RLS default; configurar acesso via CLI.
@@ -105,9 +118,12 @@ Foco: preparar repositório, monorepo, padrões de código/qualidade, ambientes 
 - **Rollback**:
   - Recriar projeto DEV; migrações ainda não aplicadas (somente estrutura).
 
+- **Status**: ✅ Concluído (2025-09-23)
+
 ---
 
 ## F1.0-F — Edge Functions (stubs)
+
 - **Objetivo**: criar funções básicas com contrato estável para evoluir nas próximas fases.
 - **Etapas**:
   1. Criar `supabase/functions/sync-cin7-stock` (stub: valida payload, loga e retorna 200 com `results: []`).
@@ -122,9 +138,12 @@ Foco: preparar repositório, monorepo, padrões de código/qualidade, ambientes 
 - **Rollback**:
   - Reverter deploy; manter diretórios e testes locais.
 
+- **Status**: ✅ Concluído (2025-09-23)
+
 ---
 
 ## F1.0-G — CI/CD
+
 - **Objetivo**: pipeline confiável para testes e deploys não disruptivos.
 - **Etapas**:
   1. Workflow `test`: checkout → setup node → `pnpm i` → `pnpm -w run test` → `type-check` → `lint`.
@@ -143,6 +162,7 @@ Foco: preparar repositório, monorepo, padrões de código/qualidade, ambientes 
 ---
 
 ## F1.0-H — Ambientes e Configuração (.env / Secrets)
+
 - **Objetivo**: padronizar variáveis e gerenciamento seguro de segredos.
 - **Etapas**:
   1. Criar `.env.example` na raiz e em `apps/web` e `apps/api` com chaves:
@@ -163,6 +183,7 @@ Foco: preparar repositório, monorepo, padrões de código/qualidade, ambientes 
 ---
 
 ## F1.0-I — Segurança baseline
+
 - **Objetivo**: estabelecer fundamentos de segurança desde o início.
 - **Etapas**:
   1. Ativar RLS por padrão no Supabase (já coberto em F1.0-E) e revisar Storage policies iniciais.
@@ -180,6 +201,7 @@ Foco: preparar repositório, monorepo, padrões de código/qualidade, ambientes 
 ---
 
 ## F1.0-J — Observabilidade baseline
+
 - **Objetivo**: logs estruturados e métricas iniciais.
 - **Etapas**:
   1. Implementar `StructuredLogger` (conforme `arquitetura.md`) em API e Functions.
@@ -197,6 +219,7 @@ Foco: preparar repositório, monorepo, padrões de código/qualidade, ambientes 
 ---
 
 ## F1.0-K — Documentação, linguagem e comunicação
+
 - **Objetivo**: material mínimo para execução fluida e consistente.
 - **Etapas**:
   1. Criar `README.md` (visão, stack, como rodar, como deployar).
@@ -215,6 +238,7 @@ Foco: preparar repositório, monorepo, padrões de código/qualidade, ambientes 
 ---
 
 ## F1.0-L — Go/No-Go, Checklist final e Rollback
+
 - **Objetivo**: validar que todos os itens da F1.0 estão prontos para suportar F1.1+.
 - **Checklist de Go**:
   - Monorepo pronto e scripts raiz funcionam.
@@ -232,6 +256,7 @@ Foco: preparar repositório, monorepo, padrões de código/qualidade, ambientes 
 ---
 
 ## Dependências e Sequência sugerida dentro da F1.0
+
 ```mermaid
 flowchart LR
   RepoMonorepo --> PadroesCodigo
@@ -250,5 +275,6 @@ flowchart LR
 ---
 
 ## Observações finais
+
 - Este plano segue os princípios de simplicidade robusta, Object Calisthenics e cache/observabilidade descritos em `arquitetura.md`.
 - Idioma padrão do produto: inglês (en-US), tom profissional. Todo conteúdo público/externo deve seguir `docs/STYLE_GUIDE_EN_US.md`.

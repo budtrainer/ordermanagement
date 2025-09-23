@@ -9,12 +9,40 @@
     "packages/*"
   ],
   "scripts": {
-    "lint": "echo \"TODO: add ESLint in F1.0-B\"",
-    "type-check": "echo \"TODO: add TypeScript config in F1.0-B\"",
-    "test": "echo \"TODO: add test runner in F1.0-B\"",
+    "prepare": "husky",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "type-check": "tsc -p tsconfig.base.json --noEmit",
+    "test": "echo \"(tests will be added in a later phase)\"",
     "build": "echo \"No build at root\""
   },
   "engines": {
     "node": ">=20"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --max-warnings=0",
+      "prettier --check"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --check"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5",
+    "typescript": "^5.6.3"
   }
 }

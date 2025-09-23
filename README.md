@@ -26,12 +26,16 @@ Order Management & Supplier Portal (CIN7-only, Supabase)
 ```
 
 ## Workspaces
+
 - Managed by pnpm. See `pnpm-workspace.yaml`.
 
 ## Node version
+
 - Node 20 (see `.nvmrc`).
 
 ## Next steps
+
 - F1.0-B: add linting, formatting, commit hooks, and dev guides.
 - F1.0-C/D: bootstrap Next.js (web) and Fastify (api) baselines.
+
 # ordermanagement

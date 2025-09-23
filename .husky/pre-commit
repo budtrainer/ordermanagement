@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+if command -v pnpm >/dev/null 2>&1; then
+  pnpm exec lint-staged
+else
+  npx --yes lint-staged
+fi

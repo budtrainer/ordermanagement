@@ -7,12 +7,14 @@ Este documento define a arquitetura para um sistema SaaS de gestão de pedidos p
 ## Princípios Arquiteturais
 
 ### 1. Simplicidade Robusta
+
 - **KISS (Keep It Simple, Stupid)**: Evitar over-engineering
 - **Single Responsibility**: Cada componente tem uma responsabilidade clara
 - **Fail Fast**: Detecção precoce de erros com tratamento adequado
 - **Convention over Configuration**: Reduzir decisões desnecessárias
 
 ### 2. Object Calisthenics Aplicados
+
 - **One level of indentation per method**: Máximo 1 nível de indentação
 - **Don't use the ELSE keyword**: Uso de early returns e guard clauses
 - **Wrap all primitives and strings**: Value Objects para domínio
@@ -24,6 +26,7 @@ Este documento define a arquitetura para um sistema SaaS de gestão de pedidos p
 - **No getters/setters/properties**: Comportamento sobre estado
 
 ### 3. Cache Strategy
+
 - **Cache Near Data**: Cache próximo aos dados mais voláteis
 - **TTL Inteligente**: TTLs baseados na volatilidade dos dados
 - **Cache Warming**: Pré-carregamento de dados críticos
@@ -32,6 +35,7 @@ Este documento define a arquitetura para um sistema SaaS de gestão de pedidos p
 ## Stack Tecnológico
 
 ### Frontend
+
 - **Next.js 14** (App Router)
 - **TypeScript** para type safety
 - **Tailwind CSS** para styling
@@ -40,6 +44,7 @@ Este documento define a arquitetura para um sistema SaaS de gestão de pedidos p
 - **React Hook Form** para formulários
 
 ### Backend
+
 - **Node.js 20** com **TypeScript**
 - **Fastify** como framework web (performance superior ao Express)
 - **Supabase** como Backend-as-a-Service
@@ -50,6 +55,7 @@ Este documento define a arquitetura para um sistema SaaS de gestão de pedidos p
   - Realtime para notificações
 
 ### Infraestrutura
+
 - **Vercel** para deploy do frontend
 - **Supabase Cloud** para backend services
 - **Cloudflare** para CDN e DNS
@@ -104,6 +110,7 @@ graph TB
 ### Cache Strategy por Entidade
 
 #### 1. SKUs e Estoque (Dados Semi-Voláteis)
+
 ```typescript
 // TTL: 10 minutos
 interface StockCache {
@@ -117,6 +124,7 @@ interface StockCache {
 ```
 
 #### 2. Fornecedores (Dados Estáticos)
+
 ```typescript
 // TTL: 24 horas
 interface VendorCache {
@@ -128,6 +136,7 @@ interface VendorCache {
 ```
 
 #### 3. RFQs Ativas (Dados Dinâmicos)
+
 ```typescript
 // TTL: 5 minutos
 interface RfqCache {
@@ -139,6 +148,7 @@ interface RfqCache {
 ```
 
 #### 4. Templates e Arquivos (Dados Imutáveis)
+
 ```typescript
 // TTL: 7 dias
 interface FileCache {
@@ -155,7 +165,7 @@ interface FileCache {
 class CacheManager {
   constructor(
     private readonly redisClient: Redis,
-    private readonly logger: Logger
+    private readonly logger: Logger,
   ) {}
 
   async get<T>(key: CacheKey, fallback: () => Promise<T>): Promise<T> {
@@ -175,20 +185,16 @@ class CacheManager {
 
   private async set<T>(key: CacheKey, value: T): Promise<void> {
     const ttl = this.getTtlByKeyType(key.type);
-    await this.redisClient.setex(
-      key.toString(),
-      ttl,
-      JSON.stringify(value)
-    );
+    await this.redisClient.setex(key.toString(), ttl, JSON.stringify(value));
   }
 
   private getTtlByKeyType(keyType: CacheKeyType): number {
     const ttlMap = {
-      stock: 600,      // 10 min
-      vendor: 86400,   // 24 horas
-      rfq: 300,        // 5 min
-      file: 604800,    // 7 dias
-      template: 604800 // 7 dias
+      stock: 600, // 10 min
+      vendor: 86400, // 24 horas
+      rfq: 300, // 5 min
+      file: 604800, // 7 dias
+      template: 604800, // 7 dias
     };
 
     return ttlMap[keyType];
@@ -224,7 +230,7 @@ class SkuCode {
 class Money {
   constructor(
     private readonly amount: number,
-    private readonly currency: Currency
+    private readonly currency: Currency,
   ) {
     this.validate();
   }
@@ -263,7 +269,7 @@ class Rfq {
     private readonly createdBy: UserId,
     private readonly deadline: Deadline,
     private vendors: VendorList,
-    private status: RfqStatus
+    private status: RfqStatus,
   ) {}
 
   addVendor(vendor: Vendor): void {
@@ -313,7 +319,7 @@ class VendorList {
   }
 
   find(vendorId: VendorId): Vendor {
-    const vendor = this.vendors.find(v => v.id.equals(vendorId));
+    const vendor = this.vendors.find((v) => v.id.equals(vendorId));
     if (!vendor) {
       throw new VendorNotFoundError();
     }
@@ -321,11 +327,11 @@ class VendorList {
   }
 
   contains(vendorId: VendorId): boolean {
-    return this.vendors.some(v => v.id.equals(vendorId));
+    return this.vendors.some((v) => v.id.equals(vendorId));
   }
 
   getActiveVendors(): VendorList {
-    const activeVendors = this.vendors.filter(v => v.isActive());
+    const activeVendors = this.vendors.filter((v) => v.isActive());
     return new VendorList(activeVendors);
   }
 
@@ -345,7 +351,7 @@ class RfqService {
     private readonly rfqRepository: RfqRepository,
     private readonly vendorRepository: VendorRepository,
     private readonly notificationService: NotificationService,
-    private readonly cacheManager: CacheManager
+    private readonly cacheManager: CacheManager,
   ) {}
 
   async createRfq(command: CreateRfqCommand): Promise<RfqId> {
@@ -382,7 +388,7 @@ class RfqService {
 class SkuRepository {
   constructor(
     private readonly database: Database,
-    private readonly cacheManager: CacheManager
+    private readonly cacheManager: CacheManager,
   ) {}
 
   async findByCode(skuCode: SkuCode): Promise<Sku | null> {
@@ -414,7 +420,7 @@ class SkuRepository {
 export class RfqRoutes {
   constructor(
     private readonly rfqService: RfqService,
-    private readonly validator: RequestValidator
+    private readonly validator: RequestValidator,
   ) {}
 
   async createRfq(request: FastifyRequest, reply: FastifyReply): Promise<void> {
@@ -459,7 +465,7 @@ class GlobalErrorHandler {
   private handleDomainError(error: DomainError, reply: FastifyReply): void {
     reply.code(400).send({
       error: error.code,
-      message: error.message
+      message: error.message,
     });
   }
 }
@@ -474,7 +480,7 @@ class Cin7Service {
   constructor(
     private readonly httpClient: HttpClient,
     private readonly cacheManager: CacheManager,
-    private readonly logger: Logger
+    private readonly logger: Logger,
   ) {}
 
   async getSkuStock(skuCode: SkuCode): Promise<Stock> {
@@ -488,7 +494,7 @@ class Cin7Service {
   async createPurchaseOrder(po: PurchaseOrder): Promise<Cin7PoId> {
     const response = await this.httpClient.post('/purchaseorders', {
       ...po.toDto(),
-      retry: { attempts: 3, delay: 1000 }
+      retry: { attempts: 3, delay: 1000 },
     });
 
     return new Cin7PoId(response.data.id);
@@ -515,11 +521,11 @@ serve(async (req) => {
       const stock = await cin7Service.getSkuStock(new SkuCode(skuCode));
       await cacheManager.set(CacheKey.stock(new SkuCode(skuCode)), stock);
       return { skuCode, stock };
-    })
+    }),
   );
 
   return new Response(JSON.stringify({ results }), {
-    headers: { 'Content-Type': 'application/json' }
+    headers: { 'Content-Type': 'application/json' },
   });
 });
 ```
@@ -637,22 +643,26 @@ jobs:
 ```typescript
 class StructuredLogger {
   info(message: string, context: LogContext): void {
-    console.log(JSON.stringify({
-      level: 'info',
-      message,
-      timestamp: new Date().toISOString(),
-      ...context
-    }));
+    console.log(
+      JSON.stringify({
+        level: 'info',
+        message,
+        timestamp: new Date().toISOString(),
+        ...context,
+      }),
+    );
   }
 
   error(error: Error, context: LogContext): void {
-    console.error(JSON.stringify({
-      level: 'error',
-      message: error.message,
-      stack: error.stack,
-      timestamp: new Date().toISOString(),
-      ...context
-    }));
+    console.error(
+      JSON.stringify({
+        level: 'error',
+        message: error.message,
+        stack: error.stack,
+        timestamp: new Date().toISOString(),
+        ...context,
+      }),
+    );
   }
 }
 ```
@@ -695,20 +705,21 @@ FOR VALUES FROM ('2024-01-01') TO ('2025-01-01');
 ```typescript
 const supabase = createClient(url, key, {
   db: {
-    schema: 'public'
+    schema: 'public',
   },
   global: {
     headers: { 'x-my-custom-header': 'my-app-name' },
   },
   auth: {
-    persistSession: false
-  }
+    persistSession: false,
+  },
 });
 ```
 
 ## Roadmap de Evolução
 
 ### Fase 1 (MVP - 3 meses)
+
 - ✅ Autenticação e RBAC
 - ✅ Cadastros básicos (SKUs, Vendors)
 - ✅ RFQ flow completo
@@ -717,6 +728,7 @@ const supabase = createClient(url, key, {
 - ✅ Cache de estoque
 
 ### Fase 2 (6 meses)
+
 - 📋 IA para validação de invoices
 - 📋 QA workflow integrado
 - 📋 Dashboard avançado
@@ -724,6 +736,7 @@ const supabase = createClient(url, key, {
 - 📋 Notificações push
 
 ### Fase 3 (12 meses)
+
 - 📋 Multi-SKU por RFQ
 - 📋 Analytics históricos
 - 📋 Mobile app para fornecedores

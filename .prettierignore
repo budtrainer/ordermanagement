@@ -1,0 +1,15 @@
+# Ignore build artifacts and dependencies
+node_modules/
+dist/
+build/
+.next/
+coverage/
+.pnpm-store/
+
+# System/editor
+.DS_Store
+.idea/
+.vscode/
+
+# Generated
+pnpm-lock.yaml
