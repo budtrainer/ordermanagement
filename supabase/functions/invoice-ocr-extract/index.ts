@@ -12,6 +12,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
   }
 
   const requestId = crypto.randomUUID();
+  const startedAt = Date.now();
 
   try {
     if (req.method !== 'POST') {
@@ -37,8 +38,15 @@ Deno.serve(async (req: Request): Promise<Response> => {
       return r;
     }
 
+    const durationMs = Date.now() - startedAt;
     console.info(
-      JSON.stringify({ fn: 'invoice-ocr-extract', requestId, hasFileUrl: Boolean(body?.fileUrl) }),
+      JSON.stringify({
+        fn: 'invoice-ocr-extract',
+        event: 'request_completed',
+        requestId,
+        hasFileUrl: Boolean(body?.fileUrl),
+        durationMs,
+      }),
     );
 
     const r = ok(
@@ -46,13 +54,23 @@ Deno.serve(async (req: Request): Promise<Response> => {
         parsed_json: {}, // to be filled by OCR pipeline in future phases
         ai_flags: [], // e.g., ["missing_vendor", "mismatch_total"] in later phases
         requestId,
+        durationMs,
       },
       200,
     );
     r.headers.set('x-request-id', requestId);
     return r;
   } catch (e) {
-    console.error(JSON.stringify({ fn: 'invoice-ocr-extract', requestId, err: String(e) }));
+    const durationMs = Date.now() - startedAt;
+    console.error(
+      JSON.stringify({
+        fn: 'invoice-ocr-extract',
+        event: 'error',
+        requestId,
+        durationMs,
+        err: String(e),
+      }),
+    );
     const r = err('Internal error', 500, 'internal_error');
     r.headers.set('x-request-id', requestId);
     return r;

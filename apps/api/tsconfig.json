@@ -5,6 +5,7 @@
     "moduleResolution": "NodeNext",
     "outDir": "dist",
     "rootDir": "src",
+    "rootDirs": ["src", "../../packages/shared/src"],
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "types": ["node"]

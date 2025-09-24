@@ -1,0 +1,7 @@
+# CODEOWNERS — update with real GitHub usernames or teams
+# Examples:
+# *       @org/maintainers
+# /apps/  @org/frontend
+# /supabase/functions/ @org/backend
+
+* @budtrainer-maintainers

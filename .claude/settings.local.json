@@ -25,7 +25,11 @@
       "Bash(cd:*)",
       "Bash(curl:*)",
       "Bash(git reset:*)",
-      "Bash(gh workflow run:*)"
+      "Bash(gh workflow run:*)",
+      "Bash(for i in {1..3})",
+      "Bash(echo:*)",
+      "Bash(done)",
+      "Bash(cp:*)"
     ],
     "deny": [],
     "ask": []

@@ -159,6 +159,8 @@ Foco: preparar repositório, monorepo, padrões de código/qualidade, ambientes 
 - **Rollback**:
   - Desabilitar jobs de deploy; manter somente testes.
 
+- **Status**: ✅ Concluído (2025-09-23)
+
 ---
 
 ## F1.0-H — Ambientes e Configuração (.env / Secrets)
@@ -180,6 +182,8 @@ Foco: preparar repositório, monorepo, padrões de código/qualidade, ambientes 
 - **Rollback**:
   - Revogar chaves e recriar secrets.
 
+- **Status**: ✅ Concluído (2025-09-23)
+
 ---
 
 ## F1.0-I — Segurança baseline
@@ -197,6 +201,8 @@ Foco: preparar repositório, monorepo, padrões de código/qualidade, ambientes 
   - False positives de scanners → ajustar configurações e ignore lists.
 - **Rollback**:
   - Reverter regras específicas mantendo baseline.
+
+- **Status**: ✅ Concluído (2025-09-23)
 
 ---
 
@@ -234,6 +240,8 @@ Foco: preparar repositório, monorepo, padrões de código/qualidade, ambientes 
   - Desalinhamento de tom → revisão de conteúdo por quem atende o cliente.
 - **Rollback**:
   - Ajustar guias sem impacto técnico.
+
+- **Status**: ✅ Concluído (2025-09-23)
 
 ---
 

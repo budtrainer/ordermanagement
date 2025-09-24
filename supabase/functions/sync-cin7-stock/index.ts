@@ -12,6 +12,7 @@ Deno.serve(async (req: Request): Promise<Response> => {
   }
 
   const requestId = crypto.randomUUID();
+  const startedAt = Date.now();
 
   try {
     if (req.method !== 'POST') {
@@ -42,30 +43,41 @@ Deno.serve(async (req: Request): Promise<Response> => {
       }
     }
 
-    // Log context
+    // Stub response
+    const durationMs = Date.now() - startedAt;
     console.info(
       JSON.stringify({
         fn: 'sync-cin7-stock',
+        event: 'request_completed',
         requestId,
         hasSkus: Boolean(body?.skus?.length),
         since: body?.since ?? null,
         force: Boolean(body?.force),
+        durationMs,
       }),
     );
-
-    // Stub response
     const r = ok(
       {
         results: [],
         received: body ?? {},
         requestId,
+        durationMs,
       },
       200,
     );
     r.headers.set('x-request-id', requestId);
     return r;
   } catch (e) {
-    console.error(JSON.stringify({ fn: 'sync-cin7-stock', requestId, err: String(e) }));
+    const durationMs = Date.now() - startedAt;
+    console.error(
+      JSON.stringify({
+        fn: 'sync-cin7-stock',
+        event: 'error',
+        requestId,
+        durationMs,
+        err: String(e),
+      }),
+    );
     const r = err('Internal error', 500, 'internal_error');
     r.headers.set('x-request-id', requestId);
     return r;
